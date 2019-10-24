@@ -1,0 +1,7 @@
+# CLion
+*.iml
+.idea/*
+!.idea/runConfigurations/
+
+# cmake
+*build*/
