@@ -1,4 +1,5 @@
 #include "application.hxx"
+#include "window.hxx"
 
 #include <SDL2/SDL.h>
 
@@ -11,7 +12,7 @@ namespace snake::client {
       : m_sdl {sdl}
   {
     if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-      throw InitializationException {m_sdl.getError ? m_sdl.getError() : ""};
+      throw InitializationException {m_sdl.lastError()};
   }
 
   Application::~Application()
@@ -22,6 +23,7 @@ namespace snake::client {
 
   int Application::run() const
   {
+    Window window {m_sdl};
     return 0;
   }
 }

@@ -7,6 +7,8 @@
 
 #include <functional>
 
+struct SDL_Window;
+
 namespace snake::client {
   /**
    * @brief Helper to make the SDL mockable.
@@ -17,6 +19,14 @@ namespace snake::client {
     std::function<void()> quit;
     std::function<char const *()> getError;
     std::function<std::uint32_t(std::uint32_t)> wasInit;
+    std::function<SDL_Window *(char const *, int, int, int, int, std::uint32_t)> createWindow;
+    std::function<void(SDL_Window *)> destroyWindow;
+
+    [[nodiscard]]
+    inline char const * lastError() const
+    {
+      return getError ? getError() : "(unknown error)";
+    }
   };
 }
 

@@ -1,14 +1,14 @@
 #pragma once
 
-#ifndef SNAKE_APPLICATION_HXX
-#define SNAKE_APPLICATION_HXX
+#ifndef SNAKE_WINDOW_HXX
+#define SNAKE_WINDOW_HXX
 
 #include <stdexcept>
 
 #include "SDL.hxx"
 
 namespace snake::client {
-  class Application
+  class Window
   {
   public:
     class InitializationException : public std::runtime_error
@@ -17,17 +17,18 @@ namespace snake::client {
       explicit InitializationException(char const * message);
     };
 
+    static int const WIDTH = 800;
+    static int const HEIGHT = 600;
+
   private:
     SDL const & m_sdl;
+    SDL_Window * m_window;
 
   public:
-    explicit Application(SDL const & sdl);
+    explicit Window(SDL const & sdl);
 
-    ~Application();
-
-    [[nodiscard]]
-    int run() const;
+    ~Window();
   };
 }
 
-#endif // SNAKE_APPLICATION_HXX
+#endif // SNAKE_WINDOW_HXX

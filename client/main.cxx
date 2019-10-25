@@ -21,6 +21,8 @@ int main()
   sdl.quit = &SDL_Quit;
   sdl.getError = &SDL_GetError;
   sdl.wasInit = &SDL_WasInit;
+  sdl.createWindow = &SDL_CreateWindow;
+  sdl.destroyWindow = &SDL_DestroyWindow;
   snake::client::Application app {sdl};
   return app.run();
 }

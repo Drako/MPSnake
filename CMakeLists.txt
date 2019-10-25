@@ -8,8 +8,14 @@ find_package(SDL2 REQUIRED)
 
 enable_testing()
 
-set(client_SOURCES client/main.cxx client/application.cxx client/application.hxx client/SDL.hxx)
-set(client_test_SOURCES client/application_tests.cxx)
+set(client_SOURCES
+        client/main.cxx
+        client/application.cxx client/application.hxx
+        client/SDL.hxx
+        client/window.hxx client/window.cxx)
+set(client_test_SOURCES
+        client/application_tests.cxx
+        client/window_tests.cxx)
 
 add_executable(client WIN32 ${client_SOURCES})
 target_include_directories(client PRIVATE ${SDL2_INCLUDE_DIRS})
