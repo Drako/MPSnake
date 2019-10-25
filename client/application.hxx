@@ -7,6 +7,8 @@
 #include <functional>
 #include <stdexcept>
 
+#include "SDL.hxx"
+
 namespace snake::client {
   class Application
   {
@@ -17,19 +19,15 @@ namespace snake::client {
       explicit InitializationException(char const * message);
     };
 
-    using Init = std::function<int(std::uint32_t)>;
-    using Quit = std::function<void()>;
-    using GetError = std::function<char const *()>;
-
   private:
-    Quit m_quit = nullptr;
-    GetError m_getError;
+    SDL const & m_sdl;
 
   public:
-    Application(Init const & init, Quit quit, GetError getError = nullptr);
+    explicit Application(SDL const & sdl);
 
     ~Application();
 
+    [[nodiscard]]
     int run() const;
   };
 }

@@ -16,7 +16,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 int main()
 #endif
 {
-  snake::client::Application app {&SDL_Init, &SDL_Quit, &SDL_GetError};
+  snake::client::SDL sdl;
+  sdl.init = &SDL_Init;
+  sdl.quit = &SDL_Quit;
+  sdl.getError = &SDL_GetError;
+  sdl.wasInit = &SDL_WasInit;
+  snake::client::Application app {sdl};
   return app.run();
 }
 

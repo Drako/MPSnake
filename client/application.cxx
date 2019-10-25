@@ -7,19 +7,17 @@ namespace snake::client {
       : std::runtime_error {message}
   {}
 
-  Application::Application(Init const & init, Quit quit, GetError getError)
-      : m_getError {std::move(getError)}
+  Application::Application(SDL const & sdl)
+      : m_sdl {sdl}
   {
-    if (init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == 0)
-      m_quit = std::move(quit);
-    else
-      throw InitializationException {getError ? getError() : ""};
+    if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+      throw InitializationException {m_sdl.getError ? m_sdl.getError() : ""};
   }
 
   Application::~Application()
   {
-    if (m_quit)
-      m_quit();
+    if (m_sdl.wasInit(SDL_INIT_EVERYTHING) != 0u)
+      m_sdl.quit();
   }
 
   int Application::run() const
