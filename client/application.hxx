@@ -5,7 +5,7 @@
 
 #include <stdexcept>
 
-#include "SDL.hxx"
+#include "sdl.hxx"
 
 namespace snake::client {
   class Application
@@ -18,10 +18,10 @@ namespace snake::client {
     };
 
   private:
-    SDL const & m_sdl;
+    SDL & m_sdl;
 
   public:
-    explicit Application(SDL const & sdl);
+    explicit Application(SDL & sdl);
 
     ~Application();
 

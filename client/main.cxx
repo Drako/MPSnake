@@ -4,8 +4,7 @@
 #else // !SNAKE_TESTING
 
 #include "application.hxx"
-
-#include <SDL2/SDL.h>
+#include "actual_sdl.hxx"
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -16,13 +15,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 int main()
 #endif
 {
-  snake::client::SDL sdl;
-  sdl.init = &SDL_Init;
-  sdl.quit = &SDL_Quit;
-  sdl.getError = &SDL_GetError;
-  sdl.wasInit = &SDL_WasInit;
-  sdl.createWindow = &SDL_CreateWindow;
-  sdl.destroyWindow = &SDL_DestroyWindow;
+  snake::client::ActualSDL sdl;
   snake::client::Application app {sdl};
   return app.run();
 }

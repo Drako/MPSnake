@@ -5,7 +5,7 @@
 
 #include <stdexcept>
 
-#include "SDL.hxx"
+#include "sdl.hxx"
 
 namespace snake::client {
   class Window
@@ -21,11 +21,11 @@ namespace snake::client {
     static int const HEIGHT = 600;
 
   private:
-    SDL const & m_sdl;
+    SDL & m_sdl;
     SDL_Window * m_window;
 
   public:
-    explicit Window(SDL const & sdl);
+    explicit Window(SDL & sdl);
 
     ~Window();
   };

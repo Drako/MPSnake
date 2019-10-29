@@ -7,7 +7,7 @@ namespace snake::client {
       : std::runtime_error {message}
   {}
 
-  Window::Window(SDL const & sdl)
+  Window::Window(SDL & sdl)
       : m_sdl {sdl}
   {
     m_window = m_sdl.createWindow(
@@ -17,7 +17,7 @@ namespace snake::client {
         SDL_WINDOW_VULKAN
     );
     if (!m_window)
-      throw InitializationException {m_sdl.lastError()};
+      throw InitializationException {m_sdl.getError()};
   }
 
   Window::~Window()

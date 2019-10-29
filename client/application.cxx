@@ -8,11 +8,11 @@ namespace snake::client {
       : std::runtime_error {message}
   {}
 
-  Application::Application(SDL const & sdl)
+  Application::Application(SDL & sdl)
       : m_sdl {sdl}
   {
     if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-      throw InitializationException {m_sdl.lastError()};
+      throw InitializationException {m_sdl.getError()};
   }
 
   Application::~Application()

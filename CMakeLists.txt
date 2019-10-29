@@ -11,9 +11,11 @@ enable_testing()
 set(client_SOURCES
         client/main.cxx
         client/application.cxx client/application.hxx
-        client/SDL.hxx
+        client/sdl.hxx
+        client/actual_sdl.hxx client/actual_sdl.cxx
         client/window.hxx client/window.cxx)
 set(client_test_SOURCES
+        client/mock_sdl.hxx client/mock_sdl.cxx
         client/application_tests.cxx
         client/window_tests.cxx)
 
