@@ -19,6 +19,14 @@ namespace snake::client {
     SDL_Window * createWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags) override;
 
     void destroyWindow(SDL_Window * window) override;
+
+    int setWindowDisplayMode(SDL_Window * window, SDL_DisplayMode const * mode) override;
+
+    int getWindowDisplayMode(SDL_Window * window, SDL_DisplayMode * mode) override;
+
+    int pollEvent(SDL_Event * event) override;
+
+    int pushEvent(SDL_Event * event) override;
   };
 }
 

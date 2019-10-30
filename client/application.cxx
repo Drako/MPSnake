@@ -24,6 +24,19 @@ namespace snake::client {
   int Application::run() const
   {
     Window window {m_sdl};
+    SDL_Event event {};
+    bool running = true;
+    while (running)
+    {
+      while (m_sdl.pollEvent(&event))
+      {
+        if (event.type == SDL_QUIT)
+        {
+          running = false;
+          break;
+        }
+      }
+    }
     return 0;
   }
 }

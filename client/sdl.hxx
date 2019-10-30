@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-struct SDL_Window;
+#include <SDL2/SDL.h>
 
 namespace snake::client {
   /**
@@ -28,6 +28,14 @@ namespace snake::client {
     virtual SDL_Window * createWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags) = 0;
 
     virtual void destroyWindow(SDL_Window * window) = 0;
+
+    virtual int setWindowDisplayMode(SDL_Window * window, SDL_DisplayMode const * mode) = 0;
+
+    virtual int getWindowDisplayMode(SDL_Window * window, SDL_DisplayMode * mode) = 0;
+
+    virtual int pollEvent(SDL_Event * event) = 0;
+
+    virtual int pushEvent(SDL_Event * event) = 0;
   };
 }
 

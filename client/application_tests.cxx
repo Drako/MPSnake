@@ -39,4 +39,15 @@ TEST_CASE("Application", "[application]")
     REQUIRE(sdl.getCallCount(Mock::Quit) == 0);
     REQUIRE(exception_thrown);
   }
+
+  SECTION("application quits on SDL_QUIT event")
+  {
+    std::deque<SDL_Event> events {MockSDL::makeQuitEvent()};
+
+    sdl.useEventQueue(events);
+
+    Application app {sdl};
+    auto const exitCode = app.run();
+    REQUIRE(exitCode == 0);
+  }
 }

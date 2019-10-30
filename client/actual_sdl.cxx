@@ -1,7 +1,5 @@
 #include "actual_sdl.hxx"
 
-#include <SDL2/SDL.h>
-
 namespace snake::client {
   int ActualSDL::init(std::uint32_t features)
   {
@@ -31,5 +29,25 @@ namespace snake::client {
   void ActualSDL::destroyWindow(SDL_Window * window)
   {
     SDL_DestroyWindow(window);
+  }
+
+  int ActualSDL::setWindowDisplayMode(SDL_Window * window, SDL_DisplayMode const * mode)
+  {
+    return SDL_SetWindowDisplayMode(window, mode);
+  }
+
+  int ActualSDL::getWindowDisplayMode(SDL_Window * window, SDL_DisplayMode * mode)
+  {
+    return SDL_GetWindowDisplayMode(window, mode);
+  }
+
+  int ActualSDL::pollEvent(SDL_Event * event)
+  {
+    return SDL_PollEvent(event);
+  }
+
+  int ActualSDL::pushEvent(SDL_Event * event)
+  {
+    return SDL_PushEvent(event);
   }
 }

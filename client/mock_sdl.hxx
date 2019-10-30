@@ -5,13 +5,12 @@
 
 #include "sdl.hxx"
 
+#include <deque>
 #include <functional>
 #include <map>
 #include <tuple>
 
 namespace snake::client {
-  static SDL_Window * const MOCK_WINDOW = (SDL_Window *)(std::uintptr_t)(~0u);
-
   enum class Mock : unsigned long
   {
     Init,
@@ -19,7 +18,11 @@ namespace snake::client {
     WasInit,
     GetError,
     CreateWindow,
-    DestroyWindow
+    DestroyWindow,
+    SetWindowDisplayMode,
+    GetWindowDisplayMode,
+    PollEvent,
+    PushEvent
   };
 
   template <Mock mock>
@@ -61,6 +64,30 @@ namespace snake::client {
     using Signature = void(SDL_Window *);
   };
 
+  template <>
+  struct MockTraits<Mock::SetWindowDisplayMode>
+  {
+    using Signature = int(SDL_Window *, SDL_DisplayMode const *);
+  };
+
+  template <>
+  struct MockTraits<Mock::GetWindowDisplayMode>
+  {
+    using Signature = int(SDL_Window *, SDL_DisplayMode *);
+  };
+
+  template <>
+  struct MockTraits<Mock::PollEvent>
+  {
+    using Signature = int(SDL_Event *);
+  };
+
+  template <>
+  struct MockTraits<Mock::PushEvent>
+  {
+    using Signature = int(SDL_Event *);
+  };
+
   template <Mock mock>
   using MockSignature = typename MockTraits<mock>::Signature;
   template <Mock mock>
@@ -79,7 +106,11 @@ namespace snake::client {
         MockFunction<Mock::WasInit>,
         MockFunction<Mock::GetError>,
         MockFunction<Mock::CreateWindow>,
-        MockFunction<Mock::DestroyWindow>
+        MockFunction<Mock::DestroyWindow>,
+        MockFunction<Mock::SetWindowDisplayMode>,
+        MockFunction<Mock::GetWindowDisplayMode>,
+        MockFunction<Mock::PollEvent>,
+        MockFunction<Mock::PushEvent>
     > m_mocks;
 
     template <Mock mock>
@@ -98,6 +129,12 @@ namespace snake::client {
       getMock<mock>().impl = std::move(impl);
     }
 
+    static SDL_Window * makeMockWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags);
+
+    static SDL_Event makeQuitEvent(std::uint32_t timestamp = 0u);
+
+    void useEventQueue(std::deque<SDL_Event> & queue);
+
     int init(std::uint32_t features) override;
 
     void quit() override;
@@ -109,6 +146,14 @@ namespace snake::client {
     SDL_Window * createWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags) override;
 
     void destroyWindow(SDL_Window * window) override;
+
+    int setWindowDisplayMode(SDL_Window * window, SDL_DisplayMode const * mode) override;
+
+    int getWindowDisplayMode(SDL_Window * window, SDL_DisplayMode * mode) override;
+
+    int pollEvent(SDL_Event * event) override;
+
+    int pushEvent(SDL_Event * event) override;
   };
 }
 
