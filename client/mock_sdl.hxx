@@ -22,7 +22,12 @@ namespace snake::client {
     SetWindowDisplayMode,
     GetWindowDisplayMode,
     PollEvent,
-    PushEvent
+    PushEvent,
+    GetWindowSurface,
+    FreeSurface,
+    FillRect,
+    MapRGBA,
+    UpdateWindowSurface
   };
 
   template <Mock mock>
@@ -88,6 +93,36 @@ namespace snake::client {
     using Signature = int(SDL_Event *);
   };
 
+  template <>
+  struct MockTraits<Mock::GetWindowSurface>
+  {
+    using Signature = SDL_Surface *(SDL_Window *);
+  };
+
+  template <>
+  struct MockTraits<Mock::FreeSurface>
+  {
+    using Signature = void(SDL_Surface *);
+  };
+
+  template <>
+  struct MockTraits<Mock::FillRect>
+  {
+    using Signature = int(SDL_Surface *, SDL_Rect const *, std::uint32_t);
+  };
+
+  template <>
+  struct MockTraits<Mock::MapRGBA>
+  {
+    using Signature = std::uint32_t(SDL_PixelFormat const *, std::uint8_t, std::uint8_t, std::uint8_t, std::uint8_t);
+  };
+
+  template <>
+  struct MockTraits<Mock::UpdateWindowSurface>
+  {
+    using Signature = int(SDL_Window *);
+  };
+
   template <Mock mock>
   using MockSignature = typename MockTraits<mock>::Signature;
   template <Mock mock>
@@ -110,7 +145,12 @@ namespace snake::client {
         MockFunction<Mock::SetWindowDisplayMode>,
         MockFunction<Mock::GetWindowDisplayMode>,
         MockFunction<Mock::PollEvent>,
-        MockFunction<Mock::PushEvent>
+        MockFunction<Mock::PushEvent>,
+        MockFunction<Mock::GetWindowSurface>,
+        MockFunction<Mock::FreeSurface>,
+        MockFunction<Mock::FillRect>,
+        MockFunction<Mock::MapRGBA>,
+        MockFunction<Mock::UpdateWindowSurface>
     > m_mocks;
 
     template <Mock mock>
@@ -154,6 +194,17 @@ namespace snake::client {
     int pollEvent(SDL_Event * event) override;
 
     int pushEvent(SDL_Event * event) override;
+
+    SDL_Surface * getWindowSurface(SDL_Window * window) override;
+
+    void freeSurface(SDL_Surface * surface) override;
+
+    virtual int fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color) override;
+
+    virtual uint32_t
+    mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a) override;
+
+    virtual int updateWindowSurface(SDL_Window * window) override;
   };
 }
 

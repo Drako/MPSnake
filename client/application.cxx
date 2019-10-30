@@ -24,6 +24,8 @@ namespace snake::client {
   int Application::run() const
   {
     Window window {m_sdl};
+    Surface screen = window.getSurface();
+
     SDL_Event event {};
     bool running = true;
     while (running)
@@ -36,6 +38,10 @@ namespace snake::client {
           break;
         }
       }
+
+      screen.fill(SDL_Color {0, 0, 0, 0});
+      // render
+      window.update();
     }
     return 0;
   }

@@ -36,6 +36,17 @@ namespace snake::client {
     virtual int pollEvent(SDL_Event * event) = 0;
 
     virtual int pushEvent(SDL_Event * event) = 0;
+
+    virtual SDL_Surface * getWindowSurface(SDL_Window * window) = 0;
+
+    virtual void freeSurface(SDL_Surface * surface) = 0;
+
+    virtual int fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color) = 0;
+
+    virtual std::uint32_t
+    mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a) = 0;
+
+    virtual int updateWindowSurface(SDL_Window * window) = 0;
   };
 }
 

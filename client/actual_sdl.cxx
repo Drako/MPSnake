@@ -50,4 +50,30 @@ namespace snake::client {
   {
     return SDL_PushEvent(event);
   }
+
+  SDL_Surface * ActualSDL::getWindowSurface(SDL_Window * window)
+  {
+    return SDL_GetWindowSurface(window);
+  }
+
+  void ActualSDL::freeSurface(SDL_Surface * surface)
+  {
+    SDL_FreeSurface(surface);
+  }
+
+  int ActualSDL::fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color)
+  {
+    return SDL_FillRect(destination, rect, color);
+  }
+
+  std::uint32_t
+  ActualSDL::mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)
+  {
+    return SDL_MapRGBA(format, r, g, b, a);
+  }
+
+  int ActualSDL::updateWindowSurface(SDL_Window * window)
+  {
+    return SDL_UpdateWindowSurface(window);
+  }
 }

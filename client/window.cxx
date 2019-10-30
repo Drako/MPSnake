@@ -14,7 +14,7 @@ namespace snake::client {
         "Snake",
         SDL_WINDOWPOS_CENTERED_DISPLAY(0u), SDL_WINDOWPOS_CENTERED_DISPLAY(0u),
         WIDTH, HEIGHT,
-        SDL_WINDOW_VULKAN
+        SDL_WINDOW_OPENGL
     );
     if (!m_window)
       throw InitializationException {m_sdl.getError()};
@@ -24,5 +24,15 @@ namespace snake::client {
   {
     if (m_window)
       m_sdl.destroyWindow(m_window);
+  }
+
+  Surface Window::getSurface()
+  {
+    return Surface(m_sdl, m_sdl.getWindowSurface(m_window));
+  }
+
+  void Window::update()
+  {
+    m_sdl.updateWindowSurface(m_window);
   }
 }

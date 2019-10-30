@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "sdl.hxx"
+#include "surface.hxx"
 
 namespace snake::client {
   class Window
@@ -28,6 +29,10 @@ namespace snake::client {
     explicit Window(SDL & sdl);
 
     ~Window();
+
+    Surface getSurface();
+
+    void update();
   };
 }
 

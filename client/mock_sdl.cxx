@@ -150,4 +150,53 @@ namespace snake::client {
     result.quit = SDL_QuitEvent {SDL_QUIT, timestamp};
     return result;
   }
+
+  SDL_Surface * MockSDL::getWindowSurface(SDL_Window * window)
+  {
+    ++m_callCounts[Mock::GetWindowSurface];
+    auto const & impl = getMock<Mock::GetWindowSurface>().impl;
+    if (impl)
+      return impl(window);
+    else
+    {
+      assert(window != nullptr);
+      return nullptr;
+    }
+  }
+
+  void MockSDL::freeSurface(SDL_Surface * surface)
+  {
+    ++m_callCounts[Mock::FreeSurface];
+    auto const & impl = getMock<Mock::FreeSurface>().impl;
+    if (impl)
+      impl(surface);
+  }
+
+  int MockSDL::fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color)
+  {
+    ++m_callCounts[Mock::FillRect];
+    auto const & impl = getMock<Mock::FillRect>().impl;
+    return impl ? impl(destination, rect, color) : 0;
+  }
+
+  uint32_t
+  MockSDL::mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)
+  {
+    ++m_callCounts[Mock::MapRGBA];
+    auto const & impl = getMock<Mock::MapRGBA>().impl;
+    if (impl)
+      return impl(format, r, g, b, a);
+    else
+    {
+      assert(format != nullptr);
+      return SDL_MapRGBA(format, r, g, b, a);
+    }
+  }
+
+  int MockSDL::updateWindowSurface(SDL_Window * window)
+  {
+    ++m_callCounts[Mock::UpdateWindowSurface];
+    auto const & impl = getMock<Mock::UpdateWindowSurface>().impl;
+    return impl ? impl(window) : 0;
+  }
 }

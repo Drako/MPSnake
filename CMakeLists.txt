@@ -13,11 +13,13 @@ set(client_SOURCES
         client/application.cxx client/application.hxx
         client/sdl.hxx
         client/actual_sdl.hxx client/actual_sdl.cxx
-        client/window.hxx client/window.cxx)
+        client/window.hxx client/window.cxx
+        client/surface.hxx client/surface.cxx)
 set(client_test_SOURCES
         client/mock_sdl.hxx client/mock_sdl.cxx
         client/application_tests.cxx
-        client/window_tests.cxx)
+        client/window_tests.cxx
+        client/surface_tests.cxx)
 
 add_executable(client WIN32 ${client_SOURCES})
 target_include_directories(client PRIVATE ${SDL2_INCLUDE_DIRS})
