@@ -4,11 +4,11 @@
 
 namespace snake::client {
   Window::InitializationException::InitializationException(char const * message)
-      : std::runtime_error {message}
+      : std::runtime_error{message}
   {}
 
   Window::Window(SDL & sdl)
-      : m_sdl {sdl}
+      : m_sdl{sdl}
   {
     m_window = m_sdl.createWindow(
         "Snake",
@@ -17,7 +17,7 @@ namespace snake::client {
         SDL_WINDOW_OPENGL
     );
     if (!m_window)
-      throw InitializationException {m_sdl.getError()};
+      throw InitializationException{m_sdl.getError()};
   }
 
   Window::~Window()

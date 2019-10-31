@@ -2,6 +2,7 @@
 *.iml
 .idea/*
 !.idea/runConfigurations/
+!.idea/codeStyles/
 
 # cmake
 *build*/

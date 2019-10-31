@@ -5,14 +5,14 @@
 
 namespace snake::client {
   Application::InitializationException::InitializationException(char const * message)
-      : std::runtime_error {message}
+      : std::runtime_error{message}
   {}
 
   Application::Application(SDL & sdl)
-      : m_sdl {sdl}
+      : m_sdl{sdl}
   {
     if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-      throw InitializationException {m_sdl.getError()};
+      throw InitializationException{m_sdl.getError()};
   }
 
   Application::~Application()
@@ -23,10 +23,10 @@ namespace snake::client {
 
   int Application::run() const
   {
-    Window window {m_sdl};
+    Window window{m_sdl};
     Surface screen = window.getSurface();
 
-    SDL_Event event {};
+    SDL_Event event{};
     bool running = true;
     while (running)
     {
@@ -39,7 +39,7 @@ namespace snake::client {
         }
       }
 
-      screen.fill(SDL_Color {0, 0, 0, 0});
+      screen.fill(SDL_Color{0, 0, 0, 0});
       // render
       window.update();
     }

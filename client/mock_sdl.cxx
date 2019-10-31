@@ -11,119 +11,142 @@ struct SDL_Window
 };
 
 namespace snake::client {
-  int MockSDL::getCallCount(Mock mock) const
+  template <MockPolicy policy>
+  int MockSDL<policy>::getCallCount(Mock mock) const
   {
     auto const it = m_callCounts.find(mock);
     return it == m_callCounts.end() ? 0 : it->second;
   }
 
-  int MockSDL::init(std::uint32_t features)
+  template <MockPolicy policy>
+  int MockSDL<policy>::init(std::uint32_t features)
   {
     ++m_callCounts[Mock::Init];
     auto const & impl = getMock<Mock::Init>().impl;
-    return impl ? impl(features) : 0;
+    if (impl) return impl(features);
+    else if constexpr (policy == MockPolicy::Stub) return 0;
+    else return ActualSDL::init(features);
   }
 
-  void MockSDL::quit()
+  template <MockPolicy policy>
+  void MockSDL<policy>::quit()
   {
     ++m_callCounts[Mock::Quit];
     auto const & impl = getMock<Mock::Quit>().impl;
     if (impl) impl();
+    else if constexpr (policy == MockPolicy::CallOriginal) ActualSDL::quit();
   }
 
-  char const * MockSDL::getError()
+  template <MockPolicy policy>
+  char const * MockSDL<policy>::getError()
   {
     ++m_callCounts[Mock::GetError];
     auto const & impl = getMock<Mock::GetError>().impl;
-    return impl ? impl() : "";
+    if (impl) return impl();
+    else if constexpr (policy == MockPolicy::Stub) return "";
+    else return ActualSDL::getError();
   }
 
-  std::uint32_t MockSDL::wasInit(std::uint32_t features)
+  template <MockPolicy policy>
+  std::uint32_t MockSDL<policy>::wasInit(std::uint32_t features)
   {
     ++m_callCounts[Mock::WasInit];
     auto const & impl = getMock<Mock::WasInit>().impl;
-    return impl ? impl(features) : features;
+    if (impl) return impl(features);
+    else if constexpr (policy == MockPolicy::Stub) return features;
+    else return ActualSDL::wasInit(features);
   }
 
-  SDL_Window * MockSDL::createWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags)
+  template <MockPolicy policy>
+  SDL_Window * MockSDL<policy>::createWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags)
   {
     ++m_callCounts[Mock::CreateWindow];
     auto const & impl = getMock<Mock::CreateWindow>().impl;
-    return impl ? impl(title, x, y, w, h, flags) : makeMockWindow(title, x, y, w, h, flags);
+    if (impl) return impl(title, x, y, w, h, flags);
+    else if constexpr (policy == MockPolicy::Stub) return new SDL_Window{title, x, y, w, h, flags};
+    else return ActualSDL::createWindow(title, x, y, w, h, flags);
   }
 
-  void MockSDL::destroyWindow(SDL_Window * window)
+  template <MockPolicy policy>
+  void MockSDL<policy>::destroyWindow(SDL_Window * window)
   {
     ++m_callCounts[Mock::DestroyWindow];
     auto const & impl = getMock<Mock::DestroyWindow>().impl;
-    if (impl)
-      impl(window);
-    else
-      delete window;
+    if (impl) impl(window);
+    else if constexpr (policy == MockPolicy::Stub) delete window;
+    else ActualSDL::destroyWindow(window);
   }
 
-  SDL_Window * MockSDL::makeMockWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags)
-  {
-    return new SDL_Window {title, x, y, w, h, flags};
-  }
-
-  int MockSDL::setWindowDisplayMode(SDL_Window * window, SDL_DisplayMode const * mode)
+  template <MockPolicy policy>
+  int MockSDL<policy>::setWindowDisplayMode(SDL_Window * window, SDL_DisplayMode const * mode)
   {
     ++m_callCounts[Mock::SetWindowDisplayMode];
     auto const & impl = getMock<Mock::SetWindowDisplayMode>().impl;
     if (impl)
       return impl(window, mode);
-    else
+    else if constexpr (policy == MockPolicy::Stub)
     {
       assert(window != nullptr);
       assert(mode != nullptr);
       window->mode = *mode;
       return 0;
     }
+    else
+      return ActualSDL::setWindowDisplayMode(window, mode);
   }
 
-  int MockSDL::getWindowDisplayMode(SDL_Window * window, SDL_DisplayMode * mode)
+  template <MockPolicy policy>
+  int MockSDL<policy>::getWindowDisplayMode(SDL_Window * window, SDL_DisplayMode * mode)
   {
     ++m_callCounts[Mock::GetWindowDisplayMode];
     auto const & impl = getMock<Mock::GetWindowDisplayMode>().impl;
     if (impl)
       return impl(window, mode);
-    else
+    else if constexpr (policy == MockPolicy::Stub)
     {
       assert(window != nullptr);
       assert(mode != nullptr);
       *mode = window->mode;
       return 0;
     }
+    else
+      return ActualSDL::getWindowDisplayMode(window, mode);
   }
 
-  int MockSDL::pollEvent(SDL_Event * event)
+  template <MockPolicy policy>
+  int MockSDL<policy>::pollEvent(SDL_Event * event)
   {
     ++m_callCounts[Mock::PollEvent];
     auto const & impl = getMock<Mock::PollEvent>().impl;
     if (impl)
       return impl(event);
-    else
+    else if constexpr (policy == MockPolicy::Stub)
     {
       assert(event != nullptr);
       return 0;
     }
+    else
+      return ActualSDL::pollEvent(event);
   }
 
-  int MockSDL::pushEvent(SDL_Event * event)
+  template <MockPolicy policy>
+  int MockSDL<policy>::pushEvent(SDL_Event * event)
   {
     ++m_callCounts[Mock::PushEvent];
     auto const & impl = getMock<Mock::PushEvent>().impl;
     if (impl)
       return impl(event);
-    else
+    else if constexpr (policy == MockPolicy::Stub)
     {
       assert(event != nullptr);
       return 0;
     }
+    else
+      return ActualSDL::pushEvent(event);
   }
 
-  void MockSDL::useEventQueue(std::deque<SDL_Event> & queue)
+  template <MockPolicy policy>
+  void MockSDL<policy>::useEventQueue(std::deque<SDL_Event> & queue)
   {
     mockFunction<Mock::PushEvent>([&queue](SDL_Event * event) {
       assert(event != nullptr);
@@ -144,59 +167,69 @@ namespace snake::client {
     });
   }
 
-  SDL_Event MockSDL::makeQuitEvent(std::uint32_t timestamp)
+  SDL_Event event_helpers::makeQuitEvent(std::uint32_t timestamp)
   {
-    SDL_Event result {};
-    result.quit = SDL_QuitEvent {SDL_QUIT, timestamp};
+    SDL_Event result{};
+    result.quit = SDL_QuitEvent{SDL_QUIT, timestamp};
     return result;
   }
 
-  SDL_Surface * MockSDL::getWindowSurface(SDL_Window * window)
+  template <MockPolicy policy>
+  SDL_Surface * MockSDL<policy>::getWindowSurface(SDL_Window * window)
   {
     ++m_callCounts[Mock::GetWindowSurface];
     auto const & impl = getMock<Mock::GetWindowSurface>().impl;
     if (impl)
       return impl(window);
-    else
+    else if constexpr (policy == MockPolicy::Stub)
     {
       assert(window != nullptr);
       return nullptr;
     }
+    else
+      return ActualSDL::getWindowSurface(window);
   }
 
-  void MockSDL::freeSurface(SDL_Surface * surface)
+  template <MockPolicy policy>
+  void MockSDL<policy>::freeSurface(SDL_Surface * surface)
   {
     ++m_callCounts[Mock::FreeSurface];
     auto const & impl = getMock<Mock::FreeSurface>().impl;
-    if (impl)
-      impl(surface);
+    if (impl) impl(surface);
+    else if constexpr (policy == MockPolicy::CallOriginal) ActualSDL::freeSurface(surface);
   }
 
-  int MockSDL::fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color)
+  template <MockPolicy policy>
+  int MockSDL<policy>::fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color)
   {
     ++m_callCounts[Mock::FillRect];
     auto const & impl = getMock<Mock::FillRect>().impl;
-    return impl ? impl(destination, rect, color) : 0;
+    if (impl) return impl(destination, rect, color);
+    else if constexpr (policy == MockPolicy::Stub) return 0;
+    else return ActualSDL::fillRect(destination, rect, color);
   }
 
+  template <MockPolicy policy>
   uint32_t
-  MockSDL::mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)
+  MockSDL<policy>::mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b,
+                           std::uint8_t a)
   {
     ++m_callCounts[Mock::MapRGBA];
     auto const & impl = getMock<Mock::MapRGBA>().impl;
-    if (impl)
-      return impl(format, r, g, b, a);
-    else
-    {
-      assert(format != nullptr);
-      return SDL_MapRGBA(format, r, g, b, a);
-    }
+    if (impl)return impl(format, r, g, b, a);
+    else return ActualSDL::mapRGBA(format, r, g, b, a);
   }
 
-  int MockSDL::updateWindowSurface(SDL_Window * window)
+  template <MockPolicy policy>
+  int MockSDL<policy>::updateWindowSurface(SDL_Window * window)
   {
     ++m_callCounts[Mock::UpdateWindowSurface];
     auto const & impl = getMock<Mock::UpdateWindowSurface>().impl;
-    return impl ? impl(window) : 0;
+    if (impl) return impl(window);
+    else if constexpr (policy == MockPolicy::Stub) return 0;
+    else return ActualSDL::updateWindowSurface(window);
   }
+
+  template class MockSDL<MockPolicy::Stub>;
+  template class MockSDL<MockPolicy::CallOriginal>;
 }

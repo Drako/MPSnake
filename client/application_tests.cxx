@@ -8,13 +8,14 @@ TEST_CASE("Application", "[application]")
   using snake::client::Mock;
   using snake::client::MockSDL;
   using snake::client::Application;
+  using namespace snake::client::event_helpers;
 
   MockSDL sdl;
 
   SECTION("auto-cleanup works")
   {
     {
-      Application const app {sdl};
+      Application const app{sdl};
     }
     REQUIRE(sdl.getCallCount(Mock::Init) == 1);
     REQUIRE(sdl.getCallCount(Mock::Quit) == 1);
@@ -28,7 +29,7 @@ TEST_CASE("Application", "[application]")
     {
       try
       {
-        Application const app {sdl};
+        Application const app{sdl};
       }
       catch (Application::InitializationException const & ex)
       {
@@ -42,11 +43,11 @@ TEST_CASE("Application", "[application]")
 
   SECTION("application quits on SDL_QUIT event")
   {
-    std::deque<SDL_Event> events {MockSDL::makeQuitEvent()};
+    std::deque<SDL_Event> events{makeQuitEvent()};
 
     sdl.useEventQueue(events);
 
-    Application app {sdl};
+    Application app{sdl};
     auto const exitCode = app.run();
     REQUIRE(exitCode == 0);
   }

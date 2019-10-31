@@ -14,7 +14,7 @@ TEST_CASE("Window", "[window]")
   SECTION("auto-cleanup works")
   {
     {
-      Window const window {sdl};
+      Window const window{sdl};
     }
     REQUIRE(sdl.getCallCount(Mock::CreateWindow) == 1);
     REQUIRE(sdl.getCallCount(Mock::DestroyWindow) == 1);
@@ -29,7 +29,7 @@ TEST_CASE("Window", "[window]")
     {
       try
       {
-        Window const window {sdl};
+        Window const window{sdl};
       }
       catch (Window::InitializationException const & ex)
       {

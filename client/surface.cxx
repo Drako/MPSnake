@@ -4,11 +4,11 @@
 
 namespace snake::client {
   Surface::InitializationException::InitializationException(char const * message)
-      : std::runtime_error {message}
+      : std::runtime_error{message}
   {}
 
   Surface::Surface(snake::client::SDL & sdl, SDL_Surface * surface) noexcept
-      : m_sdl {sdl}, m_surface {surface}, m_cleanUp {false}
+      : m_sdl{sdl}, m_surface{surface}, m_cleanUp{false}
   {
   }
 
@@ -18,12 +18,12 @@ namespace snake::client {
   }
 
   Surface::Surface(Surface && src) noexcept
-      : m_sdl {src.m_sdl}, m_surface {src.m_surface}, m_cleanUp {src.m_cleanUp}
+      : m_sdl{src.m_sdl}, m_surface{src.m_surface}, m_cleanUp{src.m_cleanUp}
   {
     src.m_surface = nullptr;
   }
 
-  Surface & Surface::operator=(Surface && src) noexcept
+  Surface & Surface::operator =(Surface && src) noexcept
   {
     if (this != &src)
     {

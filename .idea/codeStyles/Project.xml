@@ -1,0 +1,38 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <Objective-C>
+      <option name="INDENT_NAMESPACE_MEMBERS" value="2" />
+      <option name="INDENT_C_STRUCT_MEMBERS" value="2" />
+      <option name="INDENT_CLASS_MEMBERS" value="2" />
+      <option name="INDENT_INSIDE_CODE_BLOCK" value="2" />
+      <option name="KEEP_STRUCTURES_IN_ONE_LINE" value="true" />
+      <option name="KEEP_CASE_EXPRESSIONS_IN_ONE_LINE" value="true" />
+      <option name="KEEP_NESTED_NAMESPACES_IN_ONE_LINE" value="true" />
+      <option name="FUNCTION_BRACE_PLACEMENT" value="2" />
+      <option name="SPACE_BEFORE_TEMPLATE_DECLARATION_LT" value="true" />
+      <option name="SPACE_AFTER_POINTER_IN_DECLARATION" value="true" />
+      <option name="SPACE_AFTER_REFERENCE_IN_DECLARATION" value="true" />
+      <option name="SPACE_BETWEEN_OPERATOR_AND_PUNCTUATOR" value="true" />
+      <option name="ADD_BRIEF_TAG" value="true" />
+      <option name="TAG_PREFIX_OF_LINE_COMMENT" value="AT" />
+      <option name="TYPE_QUALIFIERS_PLACEMENT" value="AFTER" />
+    </Objective-C>
+    <Objective-C-extensions>
+      <option name="TAG_PREFIX_OF_LINE_COMMENT" value="AT" />
+      <option name="TYPE_QUALIFIERS_PLACEMENT" value="AFTER" />
+    </Objective-C-extensions>
+    <codeStyleSettings language="ObjectiveC">
+      <option name="RIGHT_MARGIN" value="120" />
+      <option name="BRACE_STYLE" value="2" />
+      <option name="CLASS_BRACE_STYLE" value="2" />
+      <option name="ELSE_ON_NEW_LINE" value="true" />
+      <option name="CATCH_ON_NEW_LINE" value="true" />
+      <option name="SOFT_MARGINS" value="80,120" />
+      <indentOptions>
+        <option name="INDENT_SIZE" value="2" />
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="TAB_SIZE" value="2" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>

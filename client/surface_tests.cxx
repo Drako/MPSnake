@@ -23,7 +23,7 @@ TEST_CASE("Surface", "[surface]")
       return reinterpret_cast<SDL_Surface *>(std::numeric_limits<std::uintptr_t>::max());
     });
     {
-      Window window {sdl};
+      Window window{sdl};
       Surface screen = window.getSurface();
     }
     REQUIRE(sdl.getCallCount(Mock::GetWindowSurface) == 1);

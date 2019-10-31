@@ -29,11 +29,11 @@ namespace snake::client {
 
     Surface(Surface const &) = delete;
 
-    Surface & operator=(Surface const &) = delete;
+    Surface & operator =(Surface const &) = delete;
 
     Surface(Surface && src) noexcept;
 
-    Surface & operator=(Surface && src) noexcept;
+    Surface & operator =(Surface && src) noexcept;
 
     void clear();
 

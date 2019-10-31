@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef SNAKE_ACTUAL_SDL_HXX
-#define SNAKE_ACTUAL_SDL_HXX
+#ifndef SNAKE_MOCK_SDL_HXX
+#define SNAKE_MOCK_SDL_HXX
 
-#include "sdl.hxx"
+#include "actual_sdl.hxx"
 
 #include <deque>
 #include <functional>
@@ -28,6 +28,12 @@ namespace snake::client {
     FillRect,
     MapRGBA,
     UpdateWindowSurface
+  };
+
+  enum class MockPolicy
+  {
+    Stub,
+    CallOriginal
   };
 
   template <Mock mock>
@@ -131,7 +137,12 @@ namespace snake::client {
     std::function<MockSignature<mock>> impl;
   };
 
-  class MockSDL : public SDL
+  namespace event_helpers {
+    SDL_Event makeQuitEvent(std::uint32_t timestamp = 0u);
+  }
+
+  template <MockPolicy policy = MockPolicy::Stub>
+  class MockSDL : public ActualSDL
   {
     std::map<Mock, int> m_callCounts;
 
@@ -169,10 +180,6 @@ namespace snake::client {
       getMock<mock>().impl = std::move(impl);
     }
 
-    static SDL_Window * makeMockWindow(char const * title, int x, int y, int w, int h, std::uint32_t flags);
-
-    static SDL_Event makeQuitEvent(std::uint32_t timestamp = 0u);
-
     void useEventQueue(std::deque<SDL_Event> & queue);
 
     int init(std::uint32_t features) override;
@@ -199,13 +206,16 @@ namespace snake::client {
 
     void freeSurface(SDL_Surface * surface) override;
 
-    virtual int fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color) override;
+    int fillRect(SDL_Surface * destination, SDL_Rect const * rect, std::uint32_t color) override;
 
-    virtual uint32_t
+    uint32_t
     mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a) override;
 
-    virtual int updateWindowSurface(SDL_Window * window) override;
+    int updateWindowSurface(SDL_Window * window) override;
   };
+
+  extern template class MockSDL<MockPolicy::Stub>;
+  extern template class MockSDL<MockPolicy::CallOriginal>;
 }
 
-#endif // SNAKE_ACTUAL_SDL_HXX
+#endif // SNAKE_MOCK_SDL_HXX
