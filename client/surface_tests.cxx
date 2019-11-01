@@ -8,10 +8,7 @@
 
 TEST_CASE("Surface", "[surface]")
 {
-  using snake::client::Mock;
-  using snake::client::MockSDL;
-  using snake::client::Window;
-  using snake::client::Surface;
+  using namespace snake::client;
 
   MockSDL sdl;
 

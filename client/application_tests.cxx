@@ -5,9 +5,7 @@
 
 TEST_CASE("Application", "[application]")
 {
-  using snake::client::Mock;
-  using snake::client::MockSDL;
-  using snake::client::Application;
+  using namespace snake::client;
   using namespace snake::client::event_helpers;
 
   MockSDL sdl;

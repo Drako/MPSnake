@@ -5,9 +5,7 @@
 
 TEST_CASE("Window", "[window]")
 {
-  using snake::client::Mock;
-  using snake::client::MockSDL;
-  using snake::client::Window;
+  using namespace snake::client;
 
   MockSDL sdl;
 
