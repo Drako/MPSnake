@@ -1,7 +1,6 @@
 #include "application.hxx"
 #include "window.hxx"
-
-#include <SDL2/SDL.h>
+#include "default_colors.hxx"
 
 namespace snake::client {
   Application::InitializationException::InitializationException(char const * message)
@@ -11,7 +10,7 @@ namespace snake::client {
   Application::Application(SDL & sdl)
       : m_sdl{sdl}
   {
-    if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+    if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
       throw InitializationException{m_sdl.getError()};
   }
 
@@ -26,11 +25,13 @@ namespace snake::client {
     Window window{m_sdl};
     Surface screen = window.getSurface();
 
-    SDL_Event event{};
-    bool running = true;
-    while (running)
+    for (bool running = true; running;)
     {
-      while (m_sdl.pollEvent(&event))
+      screen.fill(colors::BLACK);
+      // render
+      window.update();
+
+      for (SDL_Event event{}; m_sdl.pollEvent(&event);)
       {
         if (event.type == SDL_QUIT)
         {
@@ -38,10 +39,6 @@ namespace snake::client {
           break;
         }
       }
-
-      screen.fill(SDL_Color{0, 0, 0, 0});
-      // render
-      window.update();
     }
     return 0;
   }

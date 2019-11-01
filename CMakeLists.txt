@@ -19,7 +19,8 @@ set(client_SOURCES
         client/sdl.hxx
         client/actual_sdl.hxx client/actual_sdl.cxx
         client/window.hxx client/window.cxx
-        client/surface.hxx client/surface.cxx)
+        client/surface.hxx client/surface.cxx
+        client/default_colors.hxx)
 set(client_test_SOURCES
         client/mock_sdl.hxx client/mock_sdl.cxx
         client/application_tests.cxx

@@ -5,6 +5,7 @@
 
 #else // !SNAKE_TESTING
 
+#define SDL_MAIN_HANDLED
 #include "application.hxx"
 #include "actual_sdl.hxx"
 
@@ -17,6 +18,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 int main()
 #endif
 {
+  SDL_SetMainReady();
   snake::client::ActualSDL sdl;
   snake::client::Application app {sdl};
   return app.run();
