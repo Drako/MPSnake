@@ -10,14 +10,31 @@ namespace snake::client {
   Application::Application(SDL & sdl)
       : m_sdl{sdl}
   {
-    if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
-      throw InitializationException{m_sdl.getError()};
+    try
+    {
+      if (m_sdl.init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
+        throw InitializationException{m_sdl.getError()};
+
+      m_basePath = m_sdl.getBasePath();
+      if (m_basePath.empty())
+        throw InitializationException{m_sdl.getError()};
+
+      m_prefPath = m_sdl.getPrefPath("drako.guru", "snake");
+      if (m_prefPath.empty())
+        throw InitializationException{m_sdl.getError()};
+    }
+    catch (...)
+    {
+      if (m_sdl.wasInit(SDL_INIT_EVERYTHING) != 0u)
+        m_sdl.quit();
+
+      throw;
+    }
   }
 
   Application::~Application()
   {
-    if (m_sdl.wasInit(SDL_INIT_EVERYTHING) != 0u)
-      m_sdl.quit();
+    m_sdl.quit();
   }
 
   int Application::run() const

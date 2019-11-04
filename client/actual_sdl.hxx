@@ -38,6 +38,10 @@ namespace snake::client {
     mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a) override;
 
     int updateWindowSurface(SDL_Window * window) override;
+
+    std::string getBasePath() override;
+
+    std::string getPrefPath(char const * organizationName, char const * applicationName) override;
   };
 }
 

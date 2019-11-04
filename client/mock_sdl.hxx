@@ -27,7 +27,9 @@ namespace snake::client {
     FreeSurface,
     FillRect,
     MapRGBA,
-    UpdateWindowSurface
+    UpdateWindowSurface,
+    GetBasePath,
+    GetPrefPath
   };
 
   enum class MockPolicy
@@ -129,6 +131,18 @@ namespace snake::client {
     using Signature = int(SDL_Window *);
   };
 
+  template <>
+  struct MockTraits<Mock::GetBasePath>
+  {
+    using Signature = std::string();
+  };
+
+  template <>
+  struct MockTraits<Mock::GetPrefPath>
+  {
+    using Signature = std::string(char const *, char const *);
+  };
+
   template <Mock mock>
   using MockSignature = typename MockTraits<mock>::Signature;
   template <Mock mock>
@@ -161,7 +175,9 @@ namespace snake::client {
         MockFunction<Mock::FreeSurface>,
         MockFunction<Mock::FillRect>,
         MockFunction<Mock::MapRGBA>,
-        MockFunction<Mock::UpdateWindowSurface>
+        MockFunction<Mock::UpdateWindowSurface>,
+        MockFunction<Mock::GetBasePath>,
+        MockFunction<Mock::GetPrefPath>
     > m_mocks;
 
     template <Mock mock>
@@ -212,10 +228,17 @@ namespace snake::client {
     mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a) override;
 
     int updateWindowSurface(SDL_Window * window) override;
+
+    std::string getBasePath() override;
+
+    std::string getPrefPath(char const * organizationName, char const * applicationName) override;
   };
 
-  extern template class MockSDL<MockPolicy::Stub>;
-  extern template class MockSDL<MockPolicy::CallOriginal>;
+  extern template
+  class MockSDL<MockPolicy::Stub>;
+
+  extern template
+  class MockSDL<MockPolicy::CallOriginal>;
 }
 
 #endif // SNAKE_MOCK_SDL_HXX

@@ -24,15 +24,13 @@ TEST_CASE("Application", "[application]")
     sdl.mockFunction<Mock::Init>([](std::uint32_t) { return -1; });
     sdl.mockFunction<Mock::WasInit>([](std::uint32_t) { return 0u; });
     bool exception_thrown = false;
+    try
     {
-      try
-      {
-        Application const app{sdl};
-      }
-      catch (Application::InitializationException const & ex)
-      {
-        exception_thrown = true;
-      }
+      Application const app{sdl};
+    }
+    catch (Application::InitializationException const & ex)
+    {
+      exception_thrown = true;
     }
     REQUIRE(sdl.getCallCount(Mock::Init) == 1);
     REQUIRE(sdl.getCallCount(Mock::Quit) == 0);
@@ -48,5 +46,41 @@ TEST_CASE("Application", "[application]")
     Application app{sdl};
     auto const exitCode = app.run();
     REQUIRE(exitCode == 0);
+  }
+
+  SECTION("auto-cleanup should also work if base path could not be determined")
+  {
+    sdl.mockFunction<Mock::GetBasePath>([] { return ""; });
+    bool exception_thrown = false;
+    try
+    {
+      Application const app{sdl};
+    }
+    catch (Application::InitializationException const & ex)
+    {
+      exception_thrown = true;
+    }
+    REQUIRE(sdl.getCallCount(Mock::Init) == 1);
+    REQUIRE(sdl.getCallCount(Mock::Quit) == 1);
+    REQUIRE(sdl.getCallCount(Mock::GetBasePath) == 1);
+    REQUIRE(exception_thrown);
+  }
+
+  SECTION("auto-cleanup should also work if pref path could not be determined")
+  {
+    sdl.mockFunction<Mock::GetPrefPath>([](char const *, char const *) { return ""; });
+    bool exception_thrown = false;
+    try
+    {
+      Application const app{sdl};
+    }
+    catch (Application::InitializationException const & ex)
+    {
+      exception_thrown = true;
+    }
+    REQUIRE(sdl.getCallCount(Mock::Init) == 1);
+    REQUIRE(sdl.getCallCount(Mock::Quit) == 1);
+    REQUIRE(sdl.getCallCount(Mock::GetPrefPath) == 1);
+    REQUIRE(exception_thrown);
   }
 }

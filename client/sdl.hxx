@@ -4,6 +4,7 @@
 #define SNAKE_SDL_HXX
 
 #include <cstdint>
+#include <string>
 
 #include <SDL.h>
 
@@ -47,6 +48,10 @@ namespace snake::client {
     mapRGBA(SDL_PixelFormat const * format, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a) = 0;
 
     virtual int updateWindowSurface(SDL_Window * window) = 0;
+
+    virtual std::string getBasePath() = 0;
+
+    virtual std::string getPrefPath(char const * organizationName, char const * applicationName) = 0;
   };
 }
 

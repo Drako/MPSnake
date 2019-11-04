@@ -3,6 +3,7 @@
 #ifndef SNAKE_APPLICATION_HXX
 #define SNAKE_APPLICATION_HXX
 
+#include <string>
 #include <stdexcept>
 
 #include "sdl.hxx"
@@ -19,6 +20,8 @@ namespace snake::client {
 
   private:
     SDL & m_sdl;
+    std::string m_basePath;
+    std::string m_prefPath;
 
   public:
     explicit Application(SDL & sdl);

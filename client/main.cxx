@@ -13,7 +13,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
-#else
+#else // !_WIN32
 
 int main()
 #endif

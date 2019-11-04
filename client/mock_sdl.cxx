@@ -1,6 +1,8 @@
 #include "mock_sdl.hxx"
+#include "native.hxx"
 
 #include <cassert>
+#include <filesystem>
 
 struct SDL_Window
 {
@@ -230,6 +232,29 @@ namespace snake::client {
     else return ActualSDL::updateWindowSurface(window);
   }
 
-  template class MockSDL<MockPolicy::Stub>;
-  template class MockSDL<MockPolicy::CallOriginal>;
+  template <MockPolicy policy>
+  std::string MockSDL<policy>::getBasePath()
+  {
+    ++m_callCounts[Mock::GetBasePath];
+    auto const & impl = getMock<Mock::GetBasePath>().impl;
+    if (impl) return impl();
+    else if constexpr (policy == MockPolicy::Stub) return native::getExePath().parent_path();
+    else return ActualSDL::getBasePath();
+  }
+
+  template <MockPolicy policy>
+  std::string MockSDL<policy>::getPrefPath(char const * organizationName, char const * applicationName)
+  {
+    ++m_callCounts[Mock::GetPrefPath];
+    auto const & impl = getMock<Mock::GetPrefPath>().impl;
+    if (impl) return impl(organizationName, applicationName);
+    else if constexpr (policy == MockPolicy::Stub) return std::filesystem::temp_directory_path();
+    else return ActualSDL::getPrefPath(organizationName, applicationName);
+  }
+
+  template
+  class MockSDL<MockPolicy::Stub>;
+
+  template
+  class MockSDL<MockPolicy::CallOriginal>;
 }

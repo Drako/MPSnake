@@ -76,4 +76,30 @@ namespace snake::client {
   {
     return SDL_UpdateWindowSurface(window);
   }
+
+  std::string ActualSDL::getBasePath()
+  {
+    char * const basePath = SDL_GetBasePath();
+    if (basePath)
+    {
+      std::string const result = basePath;
+      SDL_free(basePath);
+      return result;
+    }
+    else
+      return "";
+  }
+
+  std::string ActualSDL::getPrefPath(char const * organizationName, char const * applicationName)
+  {
+    char * const prefPath = SDL_GetPrefPath(organizationName, applicationName);
+    if (prefPath)
+    {
+      std::string const result = prefPath;
+      SDL_free(prefPath);
+      return result;
+    }
+    else
+      return "";
+  }
 }
