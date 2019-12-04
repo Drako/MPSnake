@@ -102,4 +102,10 @@ namespace snake::client {
     else
       return "";
   }
+
+  SDL_Surface *
+  ActualSDL::createRGBSurfaceWithFormat(std::uint32_t flags, int width, int height, int depth, std::uint32_t format)
+  {
+    return SDL_CreateRGBSurfaceWithFormat(flags, width, height, depth, format);
+  }
 }

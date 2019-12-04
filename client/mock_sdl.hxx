@@ -29,7 +29,8 @@ namespace snake::client {
     MapRGBA,
     UpdateWindowSurface,
     GetBasePath,
-    GetPrefPath
+    GetPrefPath,
+    CreateRGBSurfaceWithFormat
   };
 
   enum class MockPolicy
@@ -143,6 +144,12 @@ namespace snake::client {
     using Signature = std::string(char const *, char const *);
   };
 
+  template <>
+  struct MockTraits<Mock::CreateRGBSurfaceWithFormat>
+  {
+    using Signature = SDL_Surface *(std::uint32_t, int, int, int, std::uint32_t);
+  };
+
   template <Mock mock>
   using MockSignature = typename MockTraits<mock>::Signature;
   template <Mock mock>
@@ -177,7 +184,8 @@ namespace snake::client {
         MockFunction<Mock::MapRGBA>,
         MockFunction<Mock::UpdateWindowSurface>,
         MockFunction<Mock::GetBasePath>,
-        MockFunction<Mock::GetPrefPath>
+        MockFunction<Mock::GetPrefPath>,
+        MockFunction<Mock::CreateRGBSurfaceWithFormat>
     > m_mocks;
 
     template <Mock mock>
@@ -232,6 +240,9 @@ namespace snake::client {
     std::string getBasePath() override;
 
     std::string getPrefPath(char const * organizationName, char const * applicationName) override;
+
+    SDL_Surface *
+    createRGBSurfaceWithFormat(std::uint32_t flags, int width, int height, int depth, std::uint32_t format) override;
   };
 
   extern template

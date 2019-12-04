@@ -42,6 +42,9 @@ namespace snake::client {
     std::string getBasePath() override;
 
     std::string getPrefPath(char const * organizationName, char const * applicationName) override;
+
+    SDL_Surface *
+    createRGBSurfaceWithFormat(std::uint32_t flags, int width, int height, int depth, std::uint32_t format) override;
   };
 }
 

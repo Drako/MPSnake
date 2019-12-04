@@ -218,7 +218,7 @@ namespace snake::client {
   {
     ++m_callCounts[Mock::MapRGBA];
     auto const & impl = getMock<Mock::MapRGBA>().impl;
-    if (impl)return impl(format, r, g, b, a);
+    if (impl) return impl(format, r, g, b, a);
     else return ActualSDL::mapRGBA(format, r, g, b, a);
   }
 
@@ -250,6 +250,17 @@ namespace snake::client {
     if (impl) return impl(organizationName, applicationName);
     else if constexpr (policy == MockPolicy::Stub) return std::filesystem::temp_directory_path();
     else return ActualSDL::getPrefPath(organizationName, applicationName);
+  }
+
+  template <MockPolicy policy>
+  SDL_Surface * MockSDL<policy>::createRGBSurfaceWithFormat(std::uint32_t flags, int width, int height, int depth,
+                                                            std::uint32_t format)
+  {
+    ++m_callCounts[Mock::CreateRGBSurfaceWithFormat];
+    auto const & impl = getMock<Mock::CreateRGBSurfaceWithFormat>().impl;
+    if (impl) return impl(flags, width, height, depth, format);
+    else if constexpr (policy == MockPolicy::Stub) return nullptr;
+    else return ActualSDL::createRGBSurfaceWithFormat(flags, width, height, depth, format);
   }
 
   template

@@ -12,6 +12,14 @@ namespace snake::client {
   {
   }
 
+  Surface::Surface(SDL & sdl, int width, int height)
+      : m_sdl{sdl}, m_cleanUp{true}
+  {
+    m_surface = m_sdl.createRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
+    if (!m_surface)
+      throw InitializationException{m_sdl.getError()};
+  }
+
   Surface::~Surface()
   {
     clear();
@@ -53,5 +61,10 @@ namespace snake::client {
   {
     if (m_surface)
       m_sdl.fillRect(m_surface, nullptr, m_sdl.mapRGBA(m_surface->format, color.r, color.g, color.b, color.a));
+  }
+
+  SDL_Surface * Surface::getRaw() const noexcept
+  {
+    return m_surface;
   }
 }

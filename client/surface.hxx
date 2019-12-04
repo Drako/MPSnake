@@ -24,6 +24,7 @@ namespace snake::client {
 
   public:
     Surface(SDL & sdl, SDL_Surface * surface) noexcept;
+    Surface(SDL & sdl, int width, int height);
 
     ~Surface();
 
@@ -34,6 +35,8 @@ namespace snake::client {
     Surface(Surface && src) noexcept;
 
     Surface & operator =(Surface && src) noexcept;
+
+    SDL_Surface * getRaw() const noexcept;
 
     void clear();
 

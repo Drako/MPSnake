@@ -52,6 +52,9 @@ namespace snake::client {
     virtual std::string getBasePath() = 0;
 
     virtual std::string getPrefPath(char const * organizationName, char const * applicationName) = 0;
+
+    virtual SDL_Surface *
+    createRGBSurfaceWithFormat(std::uint32_t flags, int width, int height, int depth, std::uint32_t format) = 0;
   };
 }
 
