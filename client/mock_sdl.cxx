@@ -199,7 +199,8 @@ namespace snake::client {
     ++m_callCounts[Mock::FreeSurface];
     auto const & impl = getMock<Mock::FreeSurface>().impl;
     if (impl) impl(surface);
-    else if constexpr (policy == MockPolicy::CallOriginal) ActualSDL::freeSurface(surface);
+    else if constexpr (policy == MockPolicy::Stub) delete surface;
+    else ActualSDL::freeSurface(surface);
   }
 
   template <MockPolicy policy>
@@ -261,7 +262,7 @@ namespace snake::client {
     ++m_callCounts[Mock::CreateRGBSurfaceWithFormat];
     auto const & impl = getMock<Mock::CreateRGBSurfaceWithFormat>().impl;
     if (impl) return impl(flags, width, height, depth, format);
-    else if constexpr (policy == MockPolicy::Stub) return nullptr;
+    else if constexpr (policy == MockPolicy::Stub) return new SDL_Surface{flags, nullptr, width, height};
     else return ActualSDL::createRGBSurfaceWithFormat(flags, width, height, depth, format);
   }
 

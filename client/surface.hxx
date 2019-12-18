@@ -36,6 +36,7 @@ namespace snake::client {
 
     Surface & operator =(Surface && src) noexcept;
 
+    [[nodiscard]]
     SDL_Surface * getRaw() const noexcept;
 
     void clear();

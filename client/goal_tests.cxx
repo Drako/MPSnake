@@ -12,7 +12,7 @@ TEST_CASE("Goal", "[goal][gameobject]")
 {
   using namespace snake::client;
 
-  MockSDL<MockPolicy::CallOriginal> sdl;
+  MockSDL sdl;
 
   sdl.init(SDL_INIT_VIDEO);
 
