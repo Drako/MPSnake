@@ -38,6 +38,7 @@ constexpr bool operator !=(SDL_Color const & lhs, SDL_Color const & rhs)
 }
 
 #ifdef CATCH_VERSION_MAJOR
+
 #include <iomanip>
 #include <sstream>
 
@@ -69,9 +70,9 @@ namespace Catch {
       os
           << "SDL_Color "
              "{ r: 0x" << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(c.r)
-          << ", g: 0x" << std::setfill('0') << std::setw(2) << std::hex  << static_cast<int>(c.g)
-          << ", b: 0x" << std::setfill('0') << std::setw(2) << std::hex  << static_cast<int>(c.b)
-          << ", a: 0x" << std::setfill('0') << std::setw(2) << std::hex  << static_cast<int>(c.a)
+          << ", g: 0x" << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(c.g)
+          << ", b: 0x" << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(c.b)
+          << ", a: 0x" << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(c.a)
           << " }";
       return os.str();
     }

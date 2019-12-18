@@ -1,5 +1,6 @@
 #include "mock_sdl.hxx"
 #include "native.hxx"
+#include "default_colors.hxx"
 
 #include <cassert>
 #include <filesystem>
@@ -219,6 +220,7 @@ namespace snake::client {
     ++m_callCounts[Mock::MapRGBA];
     auto const & impl = getMock<Mock::MapRGBA>().impl;
     if (impl) return impl(format, r, g, b, a);
+    else if constexpr (policy == MockPolicy::Stub) return colors::colorToRGBA({r, g, b, a});
     else return ActualSDL::mapRGBA(format, r, g, b, a);
   }
 
