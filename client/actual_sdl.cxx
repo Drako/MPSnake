@@ -1,8 +1,11 @@
 #include "actual_sdl.hxx"
 
+#include <cassert>
+
 namespace snake::client {
   int ActualSDL::init(std::uint32_t features)
   {
+    assert(!SDL_WasInit(SDL_INIT_EVERYTHING));
     return SDL_Init(features);
   }
 

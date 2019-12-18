@@ -14,8 +14,6 @@ TEST_CASE("Goal", "[goal][gameobject]")
 
   MockSDL sdl;
 
-  sdl.init(SDL_INIT_VIDEO);
-
   SECTION("goal renders correctly")
   {
     Surface surface{sdl, 32, 32};
@@ -40,6 +38,4 @@ TEST_CASE("Goal", "[goal][gameobject]")
     goal.moveTo(expected);
     REQUIRE(goal.area() == expected);
   }
-
-  sdl.quit();
 }
