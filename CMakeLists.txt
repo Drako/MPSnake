@@ -22,7 +22,8 @@ set(client_SOURCES
         client/surface.hxx client/surface.cxx
         client/default_colors.hxx
         client/native.cxx client/native.hxx
-        client/game_object.hxx client/game_objects.cxx
+        client/game_object.hxx client/game_object.cxx
+        client/collider.hxx
         client/goal.hxx client/goal.cxx)
 set(client_test_SOURCES
         client/mock_sdl.hxx client/mock_sdl.cxx
@@ -33,6 +34,7 @@ set(client_test_SOURCES
 
 add_executable(client WIN32 ${client_SOURCES})
 target_include_directories(client PRIVATE
+        contrib/range-v3/include
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_TTF_INCLUDE_DIR})
 target_link_libraries(client PRIVATE
