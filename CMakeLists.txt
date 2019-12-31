@@ -23,7 +23,6 @@ set(client_SOURCES
         client/default_colors.hxx
         client/native.cxx client/native.hxx
         client/game_object.hxx client/game_object.cxx
-        client/collider.hxx
         client/goal.hxx client/goal.cxx)
 set(client_test_SOURCES
         client/mock_sdl.hxx client/mock_sdl.cxx

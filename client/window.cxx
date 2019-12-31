@@ -1,6 +1,6 @@
 #include "window.hxx"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 namespace snake::client {
   Window::InitializationException::InitializationException(char const * message)
