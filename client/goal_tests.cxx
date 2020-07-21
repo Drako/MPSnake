@@ -6,6 +6,7 @@
 #include "goal.hxx"
 #include "default_colors.hxx"
 
+
 TEST_CASE("Goal", "[goal][gameobject]")
 {
   using namespace snake::client;

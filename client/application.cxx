@@ -1,6 +1,7 @@
 #include "application.hxx"
 #include "window.hxx"
 #include "default_colors.hxx"
+#include "goal.hxx"
 
 namespace snake::client {
   Application::InitializationException::InitializationException(char const * message)
@@ -41,11 +42,12 @@ namespace snake::client {
   {
     Window window{m_sdl};
     Surface screen = window.getSurface();
+    Goal const goal{{1, 1, 10, 10}, m_sdl};
 
     for (bool running = true; running;)
     {
       screen.fill(colors::BLACK);
-      // render
+      goal.render(screen);
       window.update();
 
       for (SDL_Event event{}; m_sdl.pollEvent(&event);)

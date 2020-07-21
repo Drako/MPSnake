@@ -31,7 +31,7 @@ set(client_test_SOURCES
         client/surface_tests.cxx
         client/goal_tests.cxx)
 
-add_executable(client WIN32 ${client_SOURCES})
+add_executable(client WIN32 MACOSX_BUNDLE ${client_SOURCES})
 target_include_directories(client PRIVATE
         contrib/range-v3/include
         ${SDL2_INCLUDE_DIRS}
