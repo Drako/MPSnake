@@ -34,12 +34,8 @@ namespace snake::client {
 
     Surface(Surface && src) noexcept;
 
-    Surface & operator =(Surface && src) noexcept;
-
     [[nodiscard]]
     SDL_Surface * getRaw() const noexcept;
-
-    void clear();
 
     void fillRect(SDL_Rect const & rect, SDL_Color color);
 
